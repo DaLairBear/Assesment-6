@@ -4,16 +4,26 @@ const app = express()
 const {bots, playerRecord} = require('./data')
 const {shuffleArray} = require('./utils')
 
+const Rollbar = require('rollbar')
+const rollbar = new Rollbar({
+    accessToken: '3efa8a67831a4969b980bf4cf47f6769',
+    captureUncaught: true,
+    captureUnhandledRejections: true
+})
+
 app.get('/', (req, res)=>{
     res.sendFile(path.join(__dirname, "/public/index.html"))
+    rollbar.info('html file served successfully')
 })
 
 app.get('/styles', (req, res)=>{
     res.sendFile(path.join(__dirname, "/public/index.css"))
+    rollbar.info('css file served successfully')
 })
 
 app.get('/js', (req, res)=>{
     res.sendFile(path.join(__dirname, "/public/index.js"))
+    rollbar.info('js file served successfully')
 })
 
 app.use(express.json())
@@ -24,6 +34,7 @@ app.get('/api/robots', (req, res) => {
     } catch (error) {
         console.log('ERROR GETTING BOTS', error)
         res.sendStatus(400)
+        rollbar.critical('Could not get bots')
     }
 })
 
@@ -36,6 +47,7 @@ app.get('/api/robots/five', (req, res) => {
     } catch (error) {
         console.log('ERROR GETTING FIVE BOTS', error)
         res.sendStatus(400)
+        rollbar.critical('Could not get five bots')
     }
 })
 
@@ -67,6 +79,7 @@ app.post('/api/duel', (req, res) => {
     } catch (error) {
         console.log('ERROR DUELING', error)
         res.sendStatus(400)
+        rollbar.critical('Dueling Error')
     }
 })
 
@@ -76,6 +89,7 @@ app.get('/api/player', (req, res) => {
     } catch (error) {
         console.log('ERROR GETTING PLAYER STATS', error)
         res.sendStatus(400)
+        rollbar.critical('Player Stats Error')
     }
 })
 
