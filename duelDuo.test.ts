@@ -30,7 +30,7 @@ test('Draw button displays choices', async()=>{
 })
 
 test('Add to Duo button adds bot to team', async()=>{
-    await driver.findElement(By.xpath('//div[@class = "bot-card outline"][1]/div[@class = "bot-card outline"]/button[@type = "button"][. = "Add to Duo"]')).click()
+    await driver.findElement(By.xpath('/div[@id= "choices"]/div[@class= "bot-card outline"][1]/button')).click()
     await driver.sleep(5000)
     const player = await driver.findElement(By.id('your-duo-header'))
     const displayed = await player.isDisplayed()
